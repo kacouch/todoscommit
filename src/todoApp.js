@@ -1,28 +1,57 @@
 /*
-Let's explore reducer composition more.
-Can we also extract a reducer managing just visibilityFilter? We can.
+ Finally, Redux provides a utility called combineReducers()
+  that does the same boilerplate logic that the todoApp above
+   currently does. With its help, we can rewrite todoApp like this:
 
-Below our imports, let's use ES6 Object Destructuring to declare SHOW_ALL:
+ import { combineReducers } from 'redux'
+ ​
+ const todoApp = combineReducers({
+                visibilityFilter,
+                todos
+                })
+ ​
+ export default todoApp
 * */
 
-import { VisibilityFilters } from './actions';
+/*
+*
+*You could also give them different keys, or call functions differently. These two ways to write a combined reducer are equivalent:
+
+ const reducer = combineReducers({
+ a: doSomethingWithA,
+ b: processB,
+ c: c
+ })
+
+ function reducer(state = {}, action) {
+ return {
+ a: doSomethingWithA(state.a, action),
+ b: processB(state.b, action),
+ c: c(state.c, action)
+ }
+ }
+*
+*
+*
+*
+* */
+import { combineReducers } from 'redux'
 import {
     ADD_TODO,
     TOGGLE_TODO,
     SET_VISIBILITY_FILTER,
     VisibilityFilters
-} from './actions';
-​
+} from './actions'
 const { SHOW_ALL } = VisibilityFilters
 
-/*
- Now we can rewrite the main reducer as a function that calls
- the reducers managing parts of the state, and combines them into
- a single object.
- >>>>>>>>>>>>>>It also doesn't need to know the complete initial
- state anymore. It's enough that the child reducers return their
- initial state when given undefined at first. <<<<<<<<<<<<<<<<<<<<<
-*/
+function visibilityFilter(state = SHOW_ALL, action) {
+    switch (action.type) {
+        case SET_VISIBILITY_FILTER:
+            return action.filter
+        default:
+            return state
+    }
+}
 
 function todos(state = [], action) {
     switch (action.type) {
@@ -47,21 +76,10 @@ function todos(state = [], action) {
             return state
     }
 }
-​
-function visibilityFilter(state = SHOW_ALL, action) {
-    switch (action.type) {
-        case SET_VISIBILITY_FILTER:
-            return action.filter
-        default:
-            return state
-    }
-}
-​
-function todoApp(state = {}, action) {
-    return {
-        visibilityFilter: visibilityFilter(state.visibilityFilter, action),
-        todos: todos(state.todos, action)
-    }
-}
 
-export default todoApp;
+const todoApp = combineReducers({
+    visibilityFilter,
+    todos
+})
+
+export default todoApp
