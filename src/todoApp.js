@@ -1,13 +1,8 @@
 /*
-*This is called reducer composition, and it's the fundamental pattern of building Redux apps.
-*
-*
-* Note that todos also accepts state—but it's an array!
-* Now todoApp just gives it the slice of the state to manage,
- * and todos knows how to update just that slice.
-  * This is called reducer composition, and it's the fundamental
-   * pattern of building Redux apps.
-*
+Let's explore reducer composition more.
+Can we also extract a reducer managing just visibilityFilter? We can.
+
+Below our imports, let's use ES6 Object Destructuring to declare SHOW_ALL:
 * */
 
 import { VisibilityFilters } from './actions';
@@ -18,10 +13,16 @@ import {
     VisibilityFilters
 } from './actions';
 ​
-const initialState = {
-    visibilityFilter: VisibilityFilters.SHOW_ALL,
-    todos: []
-};​​
+const { SHOW_ALL } = VisibilityFilters
+
+/*
+ Now we can rewrite the main reducer as a function that calls
+ the reducers managing parts of the state, and combines them into
+ a single object.
+ >>>>>>>>>>>>>>It also doesn't need to know the complete initial
+ state anymore. It's enough that the child reducers return their
+ initial state when given undefined at first. <<<<<<<<<<<<<<<<<<<<<
+*/
 
 function todos(state = [], action) {
     switch (action.type) {
@@ -47,22 +48,20 @@ function todos(state = [], action) {
     }
 }
 ​
-function todoApp(state = initialState, action) {
+function visibilityFilter(state = SHOW_ALL, action) {
     switch (action.type) {
         case SET_VISIBILITY_FILTER:
-            return Object.assign({}, state, {
-                visibilityFilter: action.filter
-            })
-        case ADD_TODO:
-            return Object.assign({}, state, {
-                todos: todos(state.todos, action)
-            })
-        case TOGGLE_TODO:
-            return Object.assign({}, state, {
-                todos: todos(state.todos, action)
-            })
+            return action.filter
         default:
             return state
     }
 }
+​
+function todoApp(state = {}, action) {
+    return {
+        visibilityFilter: visibilityFilter(state.visibilityFilter, action),
+        todos: todos(state.todos, action)
+    }
+}
+
 export default todoApp;
