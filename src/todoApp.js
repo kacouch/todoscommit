@@ -1,5 +1,13 @@
 /*
-*Handling More Actions
+*This is called reducer composition, and it's the fundamental pattern of building Redux apps.
+*
+*
+* Note that todos also accepts state—but it's an array!
+* Now todoApp just gives it the slice of the state to manage,
+ * and todos knows how to update just that slice.
+  * This is called reducer composition, and it's the fundamental
+   * pattern of building Redux apps.
+*
 * */
 
 import { VisibilityFilters } from './actions';
