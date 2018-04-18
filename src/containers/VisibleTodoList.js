@@ -1,4 +1,4 @@
-import { toggleTodo } from '../actions'
+import { toggleTodo } from '../actions/index'
 import TodoList from '../components/TodoList'
 
 
@@ -40,20 +40,20 @@ import { connect } from 'react-redux';
 * */
 const getVisibleTodos = (todos, filter) => {
     switch (filter) {
+        case 'SHOW_ALL':
+            return todos
         case 'SHOW_COMPLETED':
             return todos.filter(t => t.completed)
         case 'SHOW_ACTIVE':
             return todos.filter(t => !t.completed)
-        case 'SHOW_ALL':
         default:
-            return todos
+            todos
     }
 }
-const mapStateToProps = state => {
-    return {
+
+const mapStateToProps = (state) => ({
         todos: getVisibleTodos(state.todos, state.visibilityFilter)
-    }
-}
+})
 
 
 
@@ -73,12 +73,8 @@ const mapStateToProps = state => {
   *  #onTodoClick into the #TodoList component, and we want
    *  #onTodoClick to dispatch a TOGGLE_TODO action:
  * */
-const mapDispatchToProps = dispatch => {
-    return {
-        onTodoClick: id => {
-            dispatch(toggleTodo(id))
-        }
-    }
+const mapDispatchToProps = {
+    onTodoClick: toggleTodo
 }
 
 

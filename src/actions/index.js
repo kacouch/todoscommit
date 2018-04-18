@@ -1,3 +1,4 @@
+let nextTodoId = 0
 /*
  * action types
  */
@@ -21,12 +22,17 @@ export const VisibilityFilters = {
  */
 
 export function addTodo(text) {
-    return { type: ADD_TODO, text }
+    return {
+        type: ADD_TODO,
+        id: nextTodoId++,
+        text }
 }
 
-export function toggleTodo(index) {
-    return { type: TOGGLE_TODO, index }
-}
+export function toggleTodo(id) {
+    return {
+        type: TOGGLE_TODO,
+        id
+    }}
 
 export function setVisibilityFilter(filter) {
     return { type: SET_VISIBILITY_FILTER, filter }

@@ -5,9 +5,9 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
-import { addTodo } from '../actions'
+import { addTodo } from '../actions/index'
 
-let AddTodo = ({ dispatch }) => {
+let AddTodo = ({dispatch}) => {
     let input
 
     return (
@@ -20,13 +20,10 @@ let AddTodo = ({ dispatch }) => {
                     }
                     dispatch(addTodo(input.value))
                     input.value = ''
-                }}
-            >
-                <input
-                    ref={node => {
-                        input = node
-                    }}
-                />
+                }}>
+                <input ref={node => {
+                    input = node
+                }}/>
                 <button type="submit">
                     Add Todo
                 </button>
