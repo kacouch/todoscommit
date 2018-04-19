@@ -41,12 +41,12 @@ import { connect } from 'react-redux';
     * and use it in its
     * #mapStateToProps:
 **/
-const mapStateToProps = state => {
+const mapStateToProps = (state, props) => {
     return {
-        todos: getVisibleTodos(state)
+        // WARNING: THE FOLLOWING SELECTOR DOES NOT CORRECTLY MEMOIZE
+        todos: getVisibleTodos(state, props)
     }
 }
-
 
 
 /*

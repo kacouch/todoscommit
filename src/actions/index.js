@@ -25,15 +25,22 @@ export function addTodo(text) {
     return {
         type: ADD_TODO,
         id: nextTodoId++,
-        text }
+        text,
+        listId
+    }
 }
 
 export function toggleTodo(id) {
     return {
         type: TOGGLE_TODO,
-        id
+        id,
+        listId
     }}
 
 export function setVisibilityFilter(filter) {
-    return { type: SET_VISIBILITY_FILTER, filter }
+    return {
+        type: SET_VISIBILITY_FILTER,
+        filter,
+        listId
+    }
 }
