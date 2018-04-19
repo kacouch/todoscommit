@@ -41,13 +41,15 @@ import { connect } from 'react-redux';
     * and use it in its
     * #mapStateToProps:
 **/
-const mapStateToProps = (state, props) => {
-    return {
-        // WARNING: THE FOLLOWING SELECTOR DOES NOT CORRECTLY MEMOIZE
-        todos: getVisibleTodos(state, props)
+const makeMapStateToProps = () => {
+    const getVisibleTodos = makeGetVisibleTodos()
+    const mapStateToProps = (state, props) => {
+        return {
+            todos: getVisibleTodos(state, props)
+        }
     }
+    return mapStateToProps
 }
-
 
 /*
  * https://workflowy.com/#/c2bcb32a43b0
@@ -87,7 +89,7 @@ const mapDispatchToProps = {
 // and passing these two functions:
 */
 const VisibleTodoList = connect(
-    mapStateToProps,
+    makeMapStateToProps,
     mapDispatchToProps
 )(TodoList)
 
